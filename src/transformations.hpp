@@ -97,40 +97,63 @@ namespace phoeg {
         return gc;
     }
 
-    /* For undirected graphs.+++
-       TODO: Rajouter les boost:: et tester avec adjacency_matrix et adjacency_
-             list. */
+    //Define typenames only once in the whole file ??????????????
+    /*  Modifies graph tg by performing the "rhochi transformation" on vertex
+        v, by assuming that the original graph was g. g must be a subgraph of
+        tg and v must be a vertex of g.
+        TODO: after fixing the boost dependancy problem, add boost:: everywhere
+        and test with different types of graphs. */
+    template<class Graph>
+    void rhochiTransformVertexFrom(Graph & tg, const Graph & g,
+                      typename boost::graph_traits<Graph>::vertex_descriptor v)
+    {
+        typedef typename boost::graph_traits<Graph>::vertex_descriptor vertex;
+        typedef typename boost::graph_traits<Graph>::adjacency_iterator adj_iter;
+        vertex vp = add_vertex(tg);
+        add_edge(vp, v, tg); // Edge vv'
+        std::map<vertex, vertex> copyof;
+        vertex up;
+        adj_iter uit, uit_end, wit, wit_end;
+        boost::tie(uit, uit_end) = adjacent_vertices(v, g);
+        for (; uit != uit_end; ++uit) {
+            up = add_vertex(tg);
+            copyof[*uit] = up;
+            add_edge(vp, up, tg); // Edge v'u' for u in N(v)
+            boost::tie(wit, wit_end) = adjacent_vertices(*uit, g);
+            for (; wit != wit_end; ++wit) {
+                if (!edge(v, *wit, g).second && *wit != v) {
+                    // Edge u'w for u in N(v), w in N(u) \ (N(v) U {v})
+                    add_edge(up, *wit, tg);
+                // Check to avoid adding twice the same vertex
+                } else if (copyof.count(*wit)) {
+                    // Edge u'w' for u, w in N(v), uw in E
+                    add_edge(up, copyof[*wit], tg);
+                }
+            }
+        }
+    }
+    
+    template <class Graph>
+    Graph rhochiTransformOneVertex(const Graph & g,
+                      typename boost::graph_traits<Graph>::vertex_descriptor v)
+    {
+        Graph tg(g);
+        rhochiTransformVertexFrom(tg, g, v);
+        return tg;
+    }
+                  
+    /* For undirected graphs. Returns a new graph defined by T(g), where
+       T is a transformation s.t. rhochi(g) = chi(T(g)). */
     template <class Graph>
     Graph rhochiTransform(const Graph & g)
     {
         Graph tg(g); // tg is a copy of g
         typedef typename boost::graph_traits<Graph>::vertex_iterator vertex_iter;
-        typedef typename boost::graph_traits<Graph>::vertex_descriptor Vertex;
-        typedef typename boost::graph_traits<Graph>::adjacency_iterator adj_iter;
         vertex_iter v, v_end;
-        adj_iter uit, uit_end, wit, wit_end;
-        Vertex vp, up;
-        std::map<Vertex, Vertex> copyof;
+
+        // Perform the transformation on each vertex of tg based on the graph g.
         for (boost::tie(v, v_end) = vertices(g); v != v_end; ++v) {
-            vp = add_vertex(tg);
-            add_edge(vp, *v, tg); // Edge vv'
-            boost::tie(uit, uit_end) = adjacent_vertices(*v, g);
-            copyof.clear();
-            for (; uit != uit_end; ++uit) {
-                up = add_vertex(tg);
-                copyof[*uit] = up;
-                add_edge(vp, up, tg); // Edge v'u' for u in N(v)
-                boost::tie(wit, wit_end) = adjacent_vertices(*uit, g);
-                for (; wit != wit_end; ++wit) {
-                    if (!edge(*v, *wit, g).second && *wit != *v) {
-                        // Edge u'w for u in N(v), w in N(u) \ (N(v) U {v})
-                        add_edge(up, *wit, tg);
-                    } else if (copyof.count(*wit)) {
-                        // Edge u'w' for u, w in N(v), uw in E
-                        add_edge(up, copyof[*wit], tg);
-                    }
-                }
-            }
+            rhochiTransformVertexFrom(tg, g, *v);
         }
         
         return tg;
