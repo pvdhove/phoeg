@@ -1,4 +1,4 @@
-bin_PROGRAMS = output_nc_inc_rot rhochi
+bin_PROGRAMS = output_nc_inc_rot rhochi testMI testRhoChiTransform
 
 h_sources = graph.hpp invariants.hpp transformations.hpp graph6.hpp
 
@@ -6,6 +6,8 @@ output_nc_inc_rot_SOURCES = $(h_sources) output_nc_inc_rot.cpp
 output_nc_inc_rot_LDADD = -lnauty
 
 rhochi_SOURCES = $(h_sources) rhochi.cpp
+testMI_SOURCES = $(h_sources) testUtil.hpp minimalIncluded.hpp testMI.cpp
+testRhoChiTransform_SOURCES = $(h_sources) testUtil.hpp testRhoChiTransform.cpp
 
 check_PROGRAMS = testsBoost
 
