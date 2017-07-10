@@ -6,8 +6,6 @@
 #include "transformations.hpp"
 #include "testUtil.hpp"
 
-using namespace phoeg;
-
 typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS>
   BoostUGraph;
 
@@ -36,7 +34,7 @@ int main(int, char*[]) {
     BoostUGraph c4 = cycleGraph<BoostUGraph>(4);
     describe(c4, name);
 
-    cout << "***********MINIMAL INCLUDED GRAPHS***********" << "\n";
+    std::cout << "***********MINIMAL INCLUDED GRAPHS***********" << "\n";
     bool iso = true;
     std::vector<BoostUGraph> V;
     V.push_back(g21);

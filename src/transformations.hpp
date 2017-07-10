@@ -143,7 +143,8 @@ namespace phoeg {
     }
                   
     /* For undirected graphs. Returns a new graph defined by T(g), where
-       T is a transformation s.t. rhochi(g) = chi(T(g)). */
+       T is a transformation s.t. rhochi(g) = chi(T(g)). 
+       FIXME: only works with adjacency_list because of the add_vertex... */
     template <class Graph>
     Graph rhochiTransform(const Graph & g)
     {

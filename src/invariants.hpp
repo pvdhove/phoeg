@@ -644,6 +644,15 @@ namespace phoeg
 
     return chi;
   }
+  
+    template <class Graph>
+    long robustChromaticNumber(const Graph & g) {
+        long rhochi = chromaticNumber(g);
+        if (!detail::is_k_colorable(g, rhochi, true)) {
+            rhochi++;
+        }
+        return rhochi;
+    }
 
 } //namespace phoeg
 
