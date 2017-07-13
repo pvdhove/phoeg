@@ -13,4 +13,4 @@ check_PROGRAMS = testsBoost
 
 testsBoost_SOURCES = $(h_sources) testsBoost.cpp
 
-AM_CXXFLAGS = -std=c++11
+AM_CXXFLAGS = -std=c++11 -pg

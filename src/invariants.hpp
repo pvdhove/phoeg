@@ -9,6 +9,7 @@
 #include <boost/graph/connected_components.hpp>
 #include <boost/graph/boyer_myrvold_planar_test.hpp>
 #include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/adjacency_matrix.hpp>
 
 #include <vector>
 #include <map>

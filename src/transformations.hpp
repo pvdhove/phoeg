@@ -159,9 +159,28 @@ namespace phoeg {
         
         return tg;
     }
+    
+    template <class Graph>
+    Graph complement(const Graph &g) {
+        Graph tg(num_vertices(g));
+        typedef typename boost::graph_traits<Graph>::vertex_iterator vertex_iter;
+        vertex_iter u, u_end, v, v_end;
+
+        // Perform the transformation on each vertex of tg based on the graph g.
+        for (boost::tie(u, u_end) = vertices(g); u != u_end; ++u) {
+            for (boost::tie(v, v_end) = vertices(g); v != v_end; ++v) {
+                if (*v != *u && !edge(*u, *v, tg).second && !edge(*u, *v, g).second) {
+                    add_edge(*v, *u, tg);
+                }
+            }
+        }
+       
+        return tg;
+    }
 
 }
 
 #endif
 
 // vim:sw=2:
+
