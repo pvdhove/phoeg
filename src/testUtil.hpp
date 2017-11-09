@@ -62,3 +62,28 @@ Graph randomGraph(int n) {
     }
     return g;
 }
+
+int inverseTriangular(int m) {
+    return (int) floor( (-1 + sqrt(1 + 8 * m)) / 2);
+}
+
+int triangular(int k) {
+    return k * (k + 1) / 2;
+}
+
+template <class Graph>
+Graph gStar(int n, int m) {
+    int k = inverseTriangular(m);
+    assert(triangular(k) <= m);
+    Graph g(n);
+    for (int i = 0; i < k + 1; ++i) {
+        for (int j = i + 1; j < k + 1; ++j) {
+            add_edge(i, j, g);
+        }
+    }
+    for (int i = 0; i < m - triangular(k); i++) {
+        add_edge(i, k + 1, g);
+    }
+    assert(num_edges(g) == m);
+    return g;
+}

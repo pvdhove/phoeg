@@ -29,6 +29,12 @@ bool sieve(std::multiset<Graph, Graph_less> & P, const Graph & G,
 
     /*  Tests if G is a supergraph of some graph with less vertices
         and less edges. */
+    for (; it != end_it && phoeg::order(*it) < n; ++it) {
+        if (subgraphCheck(*it, G)) {
+            return false;
+        }
+    }
+    
     for (; it != end_it && phoeg::order(*it) <= n && phoeg::numEdges(*it) <= m
             ; ++it) {
         if (subgraphCheck(*it, G)) {

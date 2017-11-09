@@ -4,6 +4,7 @@
 #include "graph6.hpp"
 #include "transformations.hpp"
 #include "invariants.hpp"
+#include "testUtil.hpp"
 
 using namespace std;
 
@@ -32,9 +33,11 @@ int main(int, char*[]) {
   describe(g, name);
 
   int k = 3;
-  bool krho = phoeg::detail::is_k_colorable(g, k, true);
-  cout << "Is " << k << " robust-colorable: " << krho << endl;
-  cout << "Its numcol-" << k << " is:" << phoeg::numColK(g, k) << endl;
+  //bool krho = phoeg::detail::is_k_colorable(g, k, true);
+  //cout << "Is " << k << " robust-colorable: " << krho << endl;
+  //cout << "Its numcol-" << k << " is:" << phoeg::numColK(g, k) << endl;
 
+  phoeg::Graph k4 = completeGraph<phoeg::Graph>(4);
+  cout << phoeg::chromaticNumber(k4);
   return 0;
 }

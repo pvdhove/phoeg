@@ -17,6 +17,8 @@
 #include <algorithm>
 #include <deque>
 
+#include <assert.h> 
+
 #define INF std::numeric_limits<long>::max()
 
 namespace phoeg
@@ -42,9 +44,11 @@ namespace phoeg
     {
       int i;
       for (i = 0; i < nv; i++)
-        if (edge(i, v, g).second && col[i] == c)
+        if (edge(i, v, g).second && col[i] == c) {
           return false;
+        }
 
+      
       return true;
     }
 
@@ -627,6 +631,7 @@ namespace phoeg
 
     double f = double(order(g)) / double(maxIndependentSet(g));
     lb = int(ceil(f));
+    
     ub = detail::seq_colors(g);
 
     chi = lb;

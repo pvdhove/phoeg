@@ -37,7 +37,7 @@ int main(int, char*[]) {
     std::cout << "***********MINIMAL INCLUDED GRAPHS***********" << "\n";
     bool iso = true;
     std::vector<BoostUGraph> V;
-    V.push_back(g21);
+    //V.push_back(g21);
     for (int i = 5; i <= 50; i++) {
         V.push_back(completeGraph<BoostUGraph>(i));
         V.push_back(lineGraph<BoostUGraph>(i));
